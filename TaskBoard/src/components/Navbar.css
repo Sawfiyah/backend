@@ -1,0 +1,17 @@
+.navLinks {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.navLinks a {
+  font-size: 0.9rem;
+}
+
+.navLinks a:hover {
+  color: var(--blue);
+}
+
+.navLinks .active {
+  color: var(--blue);
+  text-decoration: underline;
+}
