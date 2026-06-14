@@ -4,10 +4,12 @@ import { TrendingUpIcon, BookIcon } from "lucide-react";
 import { Footer } from "../components/Footer";
 import { Navbar } from "../components/Navbar";
 import { getAllTasks, updateTask } from "../api/taskService";
+import { getUsername } from "../api/authService";
 
 export default function HomePage({ tasks, setTasks }) {
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState("home");
+  const username = getUsername();
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   const todayTasks = tasks.filter(
@@ -44,6 +46,19 @@ export default function HomePage({ tasks, setTasks }) {
           textAlign: "center",
         }}
       >
+        {username && (
+          <p
+            style={{
+              fontSize: "14px",
+              fontWeight: 600,
+              color: "var(--blue)",
+              marginBottom: "8px",
+            }}
+          >
+            Welcome, {username}
+          </p>
+        )}
+
         <h1
           style={{
             fontFamily: "'DM Serif Display', serif",

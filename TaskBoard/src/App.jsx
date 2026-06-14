@@ -7,6 +7,10 @@ import EditTaskPage from "./pages/EditTaskPage";
 import TasksPage from "./pages/TasksPage";
 import ViewTaskPage from "./pages/ViewTaskPage";
 import { getAllTasks } from "./api/taskService";
+import { isLoggedIn } from "./api/authService";
+import ProtectedRoute from "./components/ProtectedRoute";
+import LoginPage from "./pages/LoginPage";
+import SignupPage from "./pages/SignupPage";
 
 export default function App() {
   const [tasks, setTasks] = useState([]); // start with empty array
@@ -14,37 +18,59 @@ export default function App() {
   const [viewTask, setViewTask] = useState(null);
 
   useEffect(() => {
-    getAllTasks()
-      .then((data) => setTasks(data))
-      .catch((err) => console.error(err));
+    if (isLoggedIn()) {
+      // only fetch if logged in
+      getAllTasks()
+        .then((data) => setTasks(data))
+        .catch((err) => console.error(err));
+    }
   }, []);
 
   return (
     <Routes>
+      <Route path="/login" element={<LoginPage setTasks={setTasks} />} />
+      <Route path="/signup" element={<SignupPage setTasks={setTasks} />} />
       <Route
         path="/"
         element={<HomePage tasks={tasks} setTasks={setTasks} />}
       />
-      <Route path="/addtask" element={<AddTaskPage setTasks={setTasks} />} />
+      <Route
+        path="/addtask"
+        element={
+          <ProtectedRoute>
+            <AddTaskPage setTasks={setTasks} />
+          </ProtectedRoute>
+        }
+      />
       <Route path="/about" element={<AboutPage />} />
       <Route
         path="/edittask"
-        element={<EditTaskPage task={editTask} setTasks={setTasks} />}
+        element={
+          <ProtectedRoute>
+            <EditTaskPage task={editTask} setTasks={setTasks} />
+          </ProtectedRoute>
+        }
       />
       <Route
         path="/tasks"
         element={
-          <TasksPage
-            tasks={tasks}
-            setTasks={setTasks}
-            setEditTask={setEditTask}
-            setViewTask={setViewTask}
-          />
+          <ProtectedRoute>
+            <TasksPage
+              tasks={tasks}
+              setTasks={setTasks}
+              setEditTask={setEditTask}
+              setViewTask={setViewTask}
+            />
+          </ProtectedRoute>
         }
       />
       <Route
         path="/viewtask"
-        element={<ViewTaskPage task={viewTask} setEditTask={setEditTask} />}
+        element={
+          <ProtectedRoute>
+            <ViewTaskPage task={viewTask} setEditTask={setEditTask} />
+          </ProtectedRoute>
+        }
       />
     </Routes>
   );

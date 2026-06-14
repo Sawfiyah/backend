@@ -1,9 +1,21 @@
 import { GraduationCap } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { logout, isLoggedIn } from "../api/authService";
 import "./Navbar.css";
 
 export function Navbar({ currentPage, setCurrentPage }) {
   const navigate = useNavigate();
+  const loggedin = isLoggedIn();
+
+  function handleLogin() {
+    navigate("/login");
+  }
+
+  async function handleLogout() {
+    await logout();
+    navigate("/login");
+  }
+
   return (
     <header
       style={{
@@ -67,6 +79,31 @@ export function Navbar({ currentPage, setCurrentPage }) {
           About
         </a>
       </nav>
+      {loggedin ? (
+        <button
+          style={{
+            padding: "5px 10px",
+            backgroundColor: "var(--blue)",
+            color: "white",
+            borderRadius: "5px",
+          }}
+          onClick={handleLogout}
+        >
+          Log Out
+        </button>
+      ) : (
+        <button
+          style={{
+            padding: "5px 10px",
+            backgroundColor: "var(--blue)",
+            color: "white",
+            borderRadius: "5px",
+          }}
+          onClick={handleLogin}
+        >
+          Log In
+        </button>
+      )}
     </header>
   );
 }

@@ -1,3 +1,3 @@
 // src/api/api.js
-const API_BASE = "http://localhost:8001"; // swap for your production URL later
+const API_BASE = import.meta.env.VITE_API_BASE; // swap for your production URL later
 export default API_BASE;

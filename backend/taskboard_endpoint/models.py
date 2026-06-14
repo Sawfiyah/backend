@@ -1,9 +1,11 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 
 
 class TasksboardDetails(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="tasks")
     task_title = models.CharField(max_length=1000)
     task_description = models.TextField()
     task_due_date = models.DateField()
